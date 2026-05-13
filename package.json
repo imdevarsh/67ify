@@ -1,0 +1,25 @@
+{
+	"name": "67ify",
+	"module": "server/index.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"start": "bun run server/index.ts",
+		"check": "biome check .",
+		"check:write": "biome check --write ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.6",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5.9.3"
+	},
+	"dependencies": {
+		"@slack/bolt": "^4.7.2",
+		"@t3-oss/env-core": "^0.13.11",
+		"@vercel/slack-bolt": "^1.4.3",
+		"sharp": "^0.34.5",
+		"zod": "^4.4.3"
+	}
+}
