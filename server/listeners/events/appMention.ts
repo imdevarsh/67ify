@@ -1,5 +1,4 @@
 import type { AllMiddlewareArgs, SlackEventMiddlewareArgs } from '@slack/bolt';
-import sharp from 'sharp';
 import { make67Gif } from '../../lib/67ify';
 import { uploadEmoji } from '../../lib/emoji';
 
@@ -10,13 +9,9 @@ export const appMention = async ({
 }: AllMiddlewareArgs & SlackEventMiddlewareArgs<'app_mention'>) => {
 	if (!event.user) return;
 
-	const emoji = event.text
-		.split(`<@${context.botUserId}>`)[1]
-		?.trim()
-		.split(' ')[0]
-		?.trim()
-		.toLowerCase()
-		.replaceAll(':', '');
+	const prompt = event.text.split(`<@${context.botUserId}>`)[1]?.trim();
+	const emoji = prompt?.split(' ')[0]?.trim().toLowerCase().replaceAll(':', '');
+	const args = prompt?.split(' ').slice(1).join(' ').toLowerCase() ?? '';
 	if (!emoji) {
 		await client.chat.postMessage({
 			text: "Sorry, I couldn't parse your message :c",
@@ -37,9 +32,11 @@ export const appMention = async ({
 		return;
 	}
 
-	const image = sharp(await (await fetch(emojiUrl)).arrayBuffer());
+	const imageBuffer = await (await fetch(emojiUrl)).arrayBuffer();
 
-	const gif = await make67Gif(image);
+	const mode = args.includes('55') ? '55' : '67';
+	const gif = await make67Gif(imageBuffer, { mode });
+	const emojiName = `${emoji}-${mode}`;
 
 	const teamDomain = (await client.team.info()).team?.domain;
 	if (!teamDomain) {
@@ -53,20 +50,20 @@ export const appMention = async ({
 	}
 
 	await uploadEmoji({
-		emojiName: `${emoji}-67`,
+		emojiName,
 		image: gif,
 		type: 'gif',
 		teamDomain,
 	});
 
 	await client.chat.postMessage({
-		text: `Created :${emoji}-67:`,
+		text: `Created :${emojiName}:`,
 		channel: event.channel,
 		thread_ts: event.ts,
 	});
 
 	await client.reactions.add({
-		name: `${emoji}-67`,
+		name: emojiName,
 		channel: event.channel,
 		timestamp: event.ts,
 	});
