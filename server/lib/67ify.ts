@@ -24,6 +24,7 @@ export async function make67Gif(
 	const pages = meta.pages || 1;
 	const width = meta.width;
 	const height = meta.pageHeight || meta.height;
+	const isAnimatedInput = pages > 1;
 
 	const maxShearY = 0.3 * strength;
 	const maxDepth = 0.35 * strength;
@@ -33,20 +34,13 @@ export async function make67Gif(
 			: Math.min(0.9, height / (height + width * maxShearY));
 
 	const frameBuffers: Buffer[] = [];
+	const delays: number[] = [];
 
-	const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
-	const lcm = (a: number, b: number): number => (a * b) / gcd(a, b);
-
-	let outFrames = frames;
-	if (pages > 1) {
-		outFrames = lcm(frames, pages);
-		if (outFrames > 60) {
-			outFrames = Math.max(frames, pages);
-		}
-	}
+	const outFrames = isAnimatedInput ? pages : frames;
+	const sourceDelays = meta.delay?.length ? meta.delay : undefined;
 
 	for (let i = 0; i < outFrames; i++) {
-		const t = (i / frames) * Math.PI * 2;
+		const t = (i / outFrames) * Math.PI * 2;
 
 		const shearY = Math.sin(t) * 0.3 * strength;
 		const depth = Math.cos(t) * maxDepth;
@@ -54,15 +48,16 @@ export async function make67Gif(
 		const frameW = Math.max(1, Math.round(width * safeScale));
 		const frameH = Math.max(1, Math.round(height * safeScale));
 
-		const pageIndex = i % pages;
-		let currentFrameSrc =
-			pages > 1
-				? src
-						.clone()
-						.extract({ left: 0, top: pageIndex * height, width, height })
-				: src.clone();
+		const pageIndex = isAnimatedInput ? i : 0;
+		let currentFrameSrc = isAnimatedInput
+			? sharp(imageBuffer, {
+					animated: true,
+					page: pageIndex,
+					pages: 1,
+				}).ensureAlpha()
+			: src.clone();
 
-		if (pages > 1) {
+		if (isAnimatedInput) {
 			currentFrameSrc = sharp(await currentFrameSrc.png().toBuffer());
 		}
 
@@ -94,6 +89,7 @@ export async function make67Gif(
 
 		for (let r = 0; r < hold; r++) {
 			frameBuffers.push(frame);
+			delays.push(sourceDelays?.[pageIndex] ?? 100);
 		}
 	}
 
@@ -104,6 +100,7 @@ export async function make67Gif(
 			},
 		})
 			.gif({
+				delay: delays,
 				loop: 0,
 			})
 			.toBuffer(),
