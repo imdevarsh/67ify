@@ -16,9 +16,9 @@
 		"typescript": "^5.9.3"
 	},
 	"dependencies": {
-		"@slack/bolt": "^4.7.2",
+		"@slack/bolt": "^4.7.3",
 		"@t3-oss/env-core": "^0.13.11",
-		"@vercel/slack-bolt": "^1.4.3",
+		"@vercel/slack-bolt": "^1.5.1",
 		"sharp": "^0.34.5",
 		"zod": "^4.4.3"
 	}
