@@ -14,6 +14,9 @@ The bot reads the source emoji, renders a GIF with `sharp`, uploads the new
 emoji to the workspace, replies in the thread, and reacts with the created
 emoji.
 
+It also exposes a REST API for converting uploaded images without using
+Slack.
+
 ## Setup
 
 Install dependencies:
@@ -62,6 +65,35 @@ For Vercel deployment, set the event request URL to:
 https://<your-deployment>/api/slack/events
 ```
 
+## REST API
+
+Convert an uploaded image to a `67` or `55` GIF:
+
+```text
+POST /api/convert
+```
+
+Multipart upload:
+
+```bash
+curl -X POST https://<your-deployment>/api/convert \
+  -F "image=@input.png" \
+  -F "mode=67" \
+  --output output.gif
+```
+
+Raw image upload:
+
+```bash
+curl -X POST "https://<your-deployment>/api/convert?mode=55" \
+  -H "Content-Type: image/png" \
+  --data-binary "@input.png" \
+  --output output.gif
+```
+
+The API accepts `mode=67` or `mode=55`. If omitted, it defaults to `67`.
+Requests are unauthenticated and upload bodies are limited to 8 MB.
+
 ## Development
 
 Run the bot locally:
@@ -81,3 +113,5 @@ bun run check
 This repository includes a Vercel route at `api/slack/events.ts` and a minimal
 `vercel.json`. Configure the same environment variables in Vercel before
 deploying.
+
+Do not commit `.env`; it is intentionally ignored.
