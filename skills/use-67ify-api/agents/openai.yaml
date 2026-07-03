@@ -1,0 +1,4 @@
+interface:
+  display_name: "Use 67ify API"
+  short_description: "Convert images with the 67ify API"
+  default_prompt: "Use $use-67ify-api to convert this image into a 67 GIF."

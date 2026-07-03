@@ -76,7 +76,7 @@ POST /api/convert
 Multipart upload:
 
 ```bash
-curl -X POST https://<your-deployment>/api/convert \
+curl -X POST https://67ify.vercel.app/api/convert \
   -F "image=@input.png" \
   -F "mode=67" \
   --output output.gif
@@ -85,7 +85,7 @@ curl -X POST https://<your-deployment>/api/convert \
 Raw image upload:
 
 ```bash
-curl -X POST "https://<your-deployment>/api/convert?mode=55" \
+curl -X POST "https://67ify.vercel.app/api/convert?mode=55" \
   -H "Content-Type: image/png" \
   --data-binary "@input.png" \
   --output output.gif
@@ -93,6 +93,12 @@ curl -X POST "https://<your-deployment>/api/convert?mode=55" \
 
 The API accepts `mode=67` or `mode=55`. If omitted, it defaults to `67`.
 Requests are unauthenticated and upload bodies are limited to 8 MB.
+
+## Agent Skill
+
+This repo includes a downloadable agent skill at `skills/use-67ify-api`. Copy
+that folder into an agent skills directory to give an agent instructions and a
+small script for calling the REST API.
 
 ## Development
 
