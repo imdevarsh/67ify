@@ -5,9 +5,9 @@
     "": {
       "name": "relay",
       "dependencies": {
-        "@slack/bolt": "^4.7.2",
+        "@slack/bolt": "^4.7.3",
         "@t3-oss/env-core": "^0.13.11",
-        "@vercel/slack-bolt": "^1.4.3",
+        "@vercel/slack-bolt": "^1.5.1",
         "sharp": "^0.34.5",
         "zod": "^4.4.3",
       },
@@ -143,7 +143,7 @@
 
     "@vercel/oidc": ["@vercel/oidc@3.7.1", "", { "dependencies": { "@vercel/cli-config": "0.2.0", "@vercel/cli-exec": "1.0.0", "jose": "^5.9.6" } }, "sha512-RrSsVWbq3KLK5lJobyTPp3tSthNfUp+zWkXno5Wkko0oEW05rA4ngOrnVypP4+L8/Av89uPo2rWFmzL8iwnsmA=="],
 
-    "@vercel/slack-bolt": ["@vercel/slack-bolt@1.5.1", "", { "dependencies": { "@slack/logger": "^4.0.1", "@slack/oauth": "3.0.5", "@vercel/functions": "^3.6.1", "commander": "^14.0.3", "yaml": "^2.9.0", "zod": "^4.4.3" }, "peerDependencies": { "@slack/bolt": "^4.4.0" }, "bin": { "vercel-slack": "bin/vercel-slack.js" } }, "sha512-PQ7UVcCdjyiXL7L1eQv4yfDW+1Cbfon0gz7hkqeFm/EAn8Z4XrzeaAb1zKqpm/ZGhFbbPWYpTb8C2cwlATR59w=="],
+    "@vercel/slack-bolt": ["@vercel/slack-bolt@1.6.0", "", { "dependencies": { "@slack/logger": "^4.0.1", "@slack/oauth": "3.0.5", "@vercel/functions": "^3.7.4", "commander": "^14.0.3", "yaml": "^2.9.0", "zod": "^4.4.3" }, "peerDependencies": { "@slack/bolt": "^4.4.0" }, "bin": { "vercel-slack": "bin/vercel-slack.js" } }, "sha512-Zxh4YSYpRR+COvMUAhBEiIh9quyWeszkSbPWxRKl4h50nqoPM2b5mQ7Jn6lhij9c9etpLg71BShzv0iOyb8ZNw=="],
 
     "accepts": ["accepts@2.0.0", "", { "dependencies": { "mime-types": "^3.0.0", "negotiator": "^1.0.0" } }, "sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng=="],
 
