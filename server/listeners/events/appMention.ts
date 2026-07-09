@@ -4,7 +4,7 @@ import { EmojiUploadError, uploadEmoji } from '../../lib/emoji';
 
 const emojiNamePattern = /:([^:\s]+):/g;
 const modePattern = /\b(55|67)\b/;
-const maxEmojiBatchSize = 10;
+const maxEmojiBatchSize = 25;
 
 type Mode = '67' | '55';
 type AppMentionArgs = AllMiddlewareArgs &
