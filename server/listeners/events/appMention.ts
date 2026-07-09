@@ -4,6 +4,8 @@ import { EmojiUploadError, uploadEmoji } from '../../lib/emoji';
 
 const emojiNamePattern = /:([^:\s]+):/g;
 const modePattern = /\b(55|67)\b/;
+const maxEmojiBatchSize = 10;
+
 type Mode = '67' | '55';
 type AppMentionArgs = AllMiddlewareArgs &
 	SlackEventMiddlewareArgs<'app_mention'>;
@@ -37,6 +39,15 @@ export const appMention = async ({
 				channel: event.channel,
 				threadTs: event.ts,
 				text: "Sorry, I couldn't parse your message :c",
+			});
+			return;
+		}
+		if (emojis.length > maxEmojiBatchSize) {
+			await postThreadMessage({
+				client,
+				channel: event.channel,
+				threadTs: event.ts,
+				text: `Please send ${maxEmojiBatchSize} or fewer emoji at a time.`,
 			});
 			return;
 		}

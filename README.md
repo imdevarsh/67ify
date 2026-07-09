@@ -14,6 +14,7 @@ Mention the bot with an emoji name:
 The bot reads the source emoji, renders a GIF with `sharp`, uploads the new
 emoji to the workspace, replies in the thread, and reacts with the created
 emoji.
+Requests can include up to 10 emoji at once.
 
 It also exposes a REST API for converting uploaded images without using
 Slack.
