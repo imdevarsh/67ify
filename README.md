@@ -8,6 +8,7 @@ Mention the bot with an emoji name:
 ```text
 @67ify :party-parrot:
 @67ify :party-parrot: 55
+@67ify :a: :b: :c: 67
 ```
 
 The bot reads the source emoji, renders a GIF with `sharp`, uploads the new
