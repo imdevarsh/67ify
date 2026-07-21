@@ -6,6 +6,9 @@ const emojiNamePattern = /:([^:\s]+):/g;
 const modePattern = /\b(55|67)\b/;
 const maxEmojiBatchSize = 20;
 
+const maxSlackEmojiBytes = 127 * 1024;
+const maxSlackEmojiDimension = 128;
+
 type Mode = '67' | '55';
 type AppMentionArgs = AllMiddlewareArgs &
 	SlackEventMiddlewareArgs<'app_mention'>;
@@ -101,7 +104,11 @@ export const appMention = async ({
 				}
 
 				const imageBuffer = await imageResponse.arrayBuffer();
-				const gif = await make67Gif(imageBuffer, { mode });
+				const gif = await make67Gif(imageBuffer, {
+					mode,
+					maxBytes: maxSlackEmojiBytes,
+					maxDimension: maxSlackEmojiDimension,
+				});
 
 				await uploadEmoji({
 					emojiName,
