@@ -631,7 +631,7 @@ footer {
 	display: flex;
 	height: 68px;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-end;
 	color: var(--text-muted);
 	font-size: 12px;
 }
