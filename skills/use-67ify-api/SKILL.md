@@ -1,6 +1,6 @@
 ---
 name: use-67ify-api
-description: Convert local image files into 67ify-style animated GIFs by calling a deployed or local 67ify REST API. Use when the user asks an agent to turn an image, emoji, avatar, sticker, or other image file into a 67 or 55 GIF using the 67ify API, or when integrating with the `/api/convert` endpoint.
+description: Convert local image files into 67ify-style animated GIFs by calling a deployed or local 67ify REST API. Use when the user asks an agent to turn an image, emoji, avatar, sticker, or other image file into a 67, 55, or sequential 67-55 GIF using the 67ify API, or when integrating with the `/api/convert` endpoint.
 ---
 
 # Use 67ify API
@@ -8,7 +8,7 @@ description: Convert local image files into 67ify-style animated GIFs by calling
 ## Overview
 
 Use the 67ify REST API to convert an uploaded image into an animated GIF. The
-API is unauthenticated and accepts either `mode=67` or `mode=55`.
+API is unauthenticated and accepts `mode=67`, `mode=55`, or `mode=67-55`.
 
 ## Inputs
 
@@ -20,7 +20,7 @@ Require:
 
 Optional:
 
-- Mode: `67` or `55`. Default to `67` if the user does not specify one.
+- Mode: `67`, `55`, or `67-55`. Default to `67` if the user does not specify one.
 
 ## Workflow
 
@@ -38,7 +38,7 @@ Optional:
 Run from the skill directory or pass the full path to the script:
 
 ```bash
-bash scripts/convert-image.sh <api-base-url> <input-image> <output.gif> [67|55]
+bash scripts/convert-image.sh <api-base-url> <input-image> <output.gif> [67|55|67-55]
 ```
 
 Examples:
@@ -46,6 +46,7 @@ Examples:
 ```bash
 bash scripts/convert-image.sh https://67ify.vercel.app ./input.png ./output.gif 67
 bash scripts/convert-image.sh http://localhost:3000 ./avatar.webp ./avatar-55.gif 55
+bash scripts/convert-image.sh http://localhost:3000 ./avatar.webp ./avatar-67-55.gif 67-55
 ```
 
 The script sends a multipart request to:
@@ -62,7 +63,7 @@ the API returns an error.
 Multipart fields:
 
 - `image`: uploaded image file.
-- `mode`: `67` or `55`.
+- `mode`: `67`, `55`, or `67-55`.
 
 Successful response:
 

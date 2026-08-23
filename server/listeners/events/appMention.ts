@@ -1,15 +1,14 @@
 import type { AllMiddlewareArgs, SlackEventMiddlewareArgs } from '@slack/bolt';
-import { make67Gif } from '../../lib/67ify';
+import { type Mode, make67Gif } from '../../lib/67ify';
 import { EmojiUploadError, uploadEmoji } from '../../lib/emoji';
 
 const emojiNamePattern = /:([^:\s]+):/g;
-const modePattern = /\b(55|67)\b/;
+const modePattern = /\b(67-55|55|67)\b/;
 const maxEmojiBatchSize = 20;
 
 const maxSlackEmojiBytes = 127 * 1024;
 const maxSlackEmojiDimension = 128;
 
-type Mode = '67' | '55';
 type AppMentionArgs = AllMiddlewareArgs &
 	SlackEventMiddlewareArgs<'app_mention'>;
 type FailedEmoji = { emojiName: string; reason: string };
@@ -21,7 +20,9 @@ function parsePrompt(prompt?: string): { emojis: string[]; mode: Mode } {
 	const emojis = Array.from(prompt.matchAll(emojiNamePattern), (match) =>
 		match[1]?.toLowerCase(),
 	).filter((emoji): emoji is string => Boolean(emoji));
-	const mode = modePattern.exec(prompt)?.[1] === '55' ? '55' : '67';
+	const requestedMode = modePattern.exec(prompt)?.[1];
+	const mode: Mode =
+		requestedMode === '55' || requestedMode === '67-55' ? requestedMode : '67';
 
 	return { emojis: Array.from(new Set(emojis)), mode };
 }

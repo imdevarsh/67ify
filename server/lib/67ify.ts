@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 
-type Mode = '67' | '55';
+export type Mode = '67' | '55' | '67-55';
 
 type MakeGifOptions = {
 	frames?: number;
@@ -20,6 +20,23 @@ export async function make67Gif(
 	imageBuffer: ArrayBuffer,
 	options?: MakeGifOptions,
 ): Promise<Buffer<ArrayBufferLike>> {
+	if (options?.mode === '67-55') {
+		const sixtySevenGif = await make67Gif(imageBuffer, {
+			...options,
+			mode: '67',
+			maxBytes: undefined,
+		});
+		const secondPassInput = sixtySevenGif.buffer.slice(
+			sixtySevenGif.byteOffset,
+			sixtySevenGif.byteOffset + sixtySevenGif.byteLength,
+		) as ArrayBuffer;
+
+		return make67Gif(secondPassInput, {
+			...options,
+			mode: '55',
+		});
+	}
+
 	const {
 		frames = 18,
 		strength = 1,

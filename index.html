@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="Turn an image into a looping 67 or 55 meme GIF." />
+		<meta name="theme-color" content="#ffffff" />
+		<title>67ify — Meme GIF maker</title>
+		<link rel="stylesheet" href="/styles.css" />
+		<script src="/app.js" defer></script>
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="/" aria-label="67ify home">
+					<span class="brand-mark" aria-hidden="true">67</span>
+					<span>67ify</span>
+				</a>
+				<a class="github-link" href="https://github.com/imdevarsh/67ify" target="_blank" rel="noreferrer">
+					GitHub
+					<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3h7.5v7.5M13 3 3 13" /></svg>
+				</a>
+			</div>
+		</header>
+
+		<main class="page-shell">
+			<section class="intro" aria-labelledby="page-title">
+				<p class="eyebrow">Meme GIF maker</p>
+				<h1 id="page-title">Give any image the 67 treatment.</h1>
+				<p>Upload an image, choose 67 or 55, and download a looping GIF.</p>
+			</section>
+
+			<section class="converter" aria-label="Image converter">
+				<div class="controls-panel">
+					<div class="section-heading">
+						<h2>Upload an image</h2>
+						<p>PNG, JPG, WebP or GIF, up to 8 MB</p>
+					</div>
+
+					<input id="file-input" type="file" accept="image/*" hidden />
+					<label id="drop-zone" class="drop-zone" for="file-input" tabindex="0" role="button">
+						<span class="upload-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24"><title>Upload</title><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15v4h14v-4" /></svg>
+						</span>
+						<span class="drop-title">Drop an image here</span>
+						<span class="drop-copy">or choose a file</span>
+					</label>
+
+					<div id="file-chip" class="file-chip" hidden>
+						<div class="file-thumb-wrap"><img id="file-thumb" alt="Selected upload" /></div>
+						<div class="file-details">
+							<strong id="file-name"></strong>
+							<span id="file-size"></span>
+						</div>
+						<button id="remove-file" type="button" aria-label="Remove selected image">
+							<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8m0-8-8 8" /></svg>
+						</button>
+					</div>
+
+					<fieldset class="mode-section">
+						<legend>Effect</legend>
+						<p>Choose how the image should move.</p>
+						<div class="mode-picker">
+							<label class="mode-option">
+								<input type="radio" name="mode" value="67" checked />
+								<span class="mode-card"><i aria-hidden="true"></i><span><strong>67</strong><small>The classic up-and-down motion</small></span></span>
+							</label>
+							<label class="mode-option">
+								<input type="radio" name="mode" value="55" />
+								<span class="mode-card"><i aria-hidden="true"></i><span><strong>55</strong><small>The side-to-side alternative</small></span></span>
+							</label>
+							<label class="mode-option">
+								<input type="radio" name="mode" value="67-55" />
+								<span class="mode-card"><i aria-hidden="true"></i><span><strong>67 + 55</strong><small>Apply both effects</small></span></span>
+							</label>
+						</div>
+					</fieldset>
+
+					<button id="convert-button" class="convert-button" type="button" disabled>
+						<span class="button-label">Create GIF</span>
+						<span class="button-arrow" aria-hidden="true">→</span>
+					</button>
+					<p id="error-message" class="error-message" role="alert" hidden></p>
+				</div>
+
+				<div class="preview-panel">
+					<div class="preview-heading">
+						<h2>Preview</h2>
+						<span id="preview-mode">67 effect</span>
+					</div>
+
+					<div id="preview-stage" class="preview-stage is-empty">
+						<div id="empty-preview" class="empty-preview">
+							<span class="preview-icon" aria-hidden="true">
+								<svg viewBox="0 0 24 24"><title>Image preview</title><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Z" /><path d="m5 17 4.5-4.5 3 3 2-2L20 19M15.5 8.5h.01" /></svg>
+							</span>
+							<strong>Your meme will appear here</strong>
+							<span>Select an image to get started.</span>
+						</div>
+
+						<div id="loading-preview" class="loading-preview" hidden>
+							<span class="spinner" aria-hidden="true"></span>
+							<strong>Creating your GIF…</strong>
+							<span>This usually takes a few seconds.</span>
+							<span id="loading-mode" hidden>67</span>
+						</div>
+
+						<div id="result-preview" class="result-preview" hidden>
+							<img id="result-image" alt="Converted animated GIF" />
+						</div>
+					</div>
+
+					<div id="result-actions" class="result-actions" hidden>
+						<div><strong>Your meme is ready</strong><span>Download it or send it to the group chat.</span></div>
+						<a id="download-link" class="download-button" download>
+							<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2v11m0 0 4-4m-4 4L6 9M3 16h14" /></svg>
+							Download GIF
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<p class="privacy-note">Images are processed for conversion and are not stored.</p>
+		</main>
+
+		<footer>
+			<div class="footer-inner">
+				<span>© 67ify</span>
+				<a href="https://github.com/imdevarsh/67ify" target="_blank" rel="noreferrer">Source code</a>
+			</div>
+		</footer>
+	</body>
+</html>

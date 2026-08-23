@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [ "$#" -lt 3 ] || [ "$#" -gt 4 ]; then
-	printf 'Usage: %s <api-base-url> <input-image> <output.gif> [67|55]\n' "$0" >&2
+	printf 'Usage: %s <api-base-url> <input-image> <output.gif> [67|55|67-55]\n' "$0" >&2
 	exit 64
 fi
 
@@ -11,8 +11,8 @@ input_image="$2"
 output_gif="$3"
 mode="${4:-67}"
 
-if [ "$mode" != "67" ] && [ "$mode" != "55" ]; then
-	printf 'Mode must be 67 or 55, got: %s\n' "$mode" >&2
+if [ "$mode" != "67" ] && [ "$mode" != "55" ] && [ "$mode" != "67-55" ]; then
+	printf 'Mode must be 67, 55, or 67-55, got: %s\n' "$mode" >&2
 	exit 64
 fi
 

@@ -1,7 +1,7 @@
 # 67ify
 
-A Slack bot that turns existing workspace emoji into animated `:emoji-67:` or
-`:emoji-55:` variants.
+A Slack bot that turns existing workspace emoji into animated `:emoji-67:`,
+`:emoji-55:`, or sequential `:emoji-67-55:` variants.
 
 Mention the bot with an emoji name:
 
@@ -9,15 +9,19 @@ Mention the bot with an emoji name:
 @67ify :party-parrot:
 @67ify :party-parrot: 55
 @67ify :a: :b: :c: 67
+@67ify :a: :b: :c: 67-55
 ```
 
 The bot reads the source emoji, renders a GIF with `sharp`, uploads the new
 emoji to the workspace, replies in the thread, and reacts with the created
 emoji.
-Requests can include up to 10 emoji at once.
+Requests can include up to 20 emoji at once.
 
 It also exposes a REST API for converting uploaded images without using
 Slack.
+
+The included web UI provides drag-and-drop uploads, `67`, `55`, and sequential
+`67-55` mode selection, a result preview, and one-click GIF downloads.
 
 ## Setup
 
@@ -69,7 +73,7 @@ https://<your-deployment>/api/slack/events
 
 ## REST API
 
-Convert an uploaded image to a `67` or `55` GIF:
+Convert an uploaded image to a `67`, `55`, or sequential `67-55` GIF:
 
 ```text
 POST /api/convert
@@ -93,7 +97,9 @@ curl -X POST "https://67ify.vercel.app/api/convert?mode=55" \
   --output output.gif
 ```
 
-The API accepts `mode=67` or `mode=55`. If omitted, it defaults to `67`.
+The API accepts `mode=67`, `mode=55`, or `mode=67-55`. If omitted, it defaults
+to `67`. The combined mode applies the complete 67 animation first, then runs
+that animated result through the 55 transform.
 Requests are unauthenticated and upload bodies are limited to 8 MB.
 
 ## Agent Skill
@@ -109,6 +115,15 @@ Run the bot locally:
 ```bash
 bun run start
 ```
+
+Run the web app locally:
+
+```bash
+bun run dev:web
+```
+
+Then open `http://localhost:3000`. The local web server includes the conversion
+API, so the full upload and download flow works without additional setup.
 
 Check formatting and lint rules:
 

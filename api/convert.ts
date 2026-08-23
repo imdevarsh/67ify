@@ -1,4 +1,4 @@
-import { make67Gif } from '../server/lib/67ify';
+import { type Mode, make67Gif } from '../server/lib/67ify';
 
 const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 const corsHeaders = {
@@ -6,8 +6,6 @@ const corsHeaders = {
 	'Access-Control-Allow-Methods': 'POST, OPTIONS',
 	'Access-Control-Allow-Headers': 'Content-Type',
 };
-
-type Mode = '67' | '55';
 
 export async function OPTIONS() {
 	return new Response(null, {
@@ -187,6 +185,7 @@ function toArrayBuffer(bytes: Uint8Array) {
 }
 
 function parseMode(value: unknown): Mode {
+	if (value === '67-55') return '67-55';
 	return value === '55' ? '55' : '67';
 }
 
