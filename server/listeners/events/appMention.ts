@@ -58,17 +58,6 @@ export const appMention = async ({
 
 		const emojiList = await client.emoji.list();
 		const emojiMap = (emojiList.emoji ?? {}) as EmojiMap;
-		const teamDomain = (await client.team.info()).team?.domain;
-		if (!teamDomain) {
-			console.error('Failed to fetch team domain.');
-			await postThreadMessage({
-				client,
-				channel: event.channel,
-				threadTs: event.ts,
-				text: 'I could not figure out this Slack workspace domain, so I could not upload emoji. Please ping the bot administrator.',
-			});
-			return;
-		}
 
 		const createdEmojiNames: string[] = [];
 		const existingEmojiNames: string[] = [];
@@ -115,7 +104,6 @@ export const appMention = async ({
 					emojiName,
 					image: gif,
 					type: 'gif',
-					teamDomain,
 				});
 
 				createdEmojiNames.push(emojiName);
@@ -253,9 +241,7 @@ function buildResultMessage({
 
 function formatErrorReason(error: unknown) {
 	if (error instanceof EmojiUploadError) {
-		return error.details?.slackError
-			? `Slack said ${error.details.slackError}`
-			: 'Slack rejected the upload';
+		return error.details?.proxyError ?? 'the emoji proxy rejected the upload';
 	}
 
 	if (error instanceof Error && error.message) {

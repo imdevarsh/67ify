@@ -43,20 +43,21 @@ Fill in the Slack credentials:
 SLACK_BOT_TOKEN=""
 SLACK_SIGNING_SECRET=""
 SLACK_APP_TOKEN="xapp-"
-SLACK_USER_XOXC=""
-SLACK_COOKIE=""
+SLACK_EMOJI_PROXY_URL="https://your-proxy.vercel.app"
+SLACK_EMOJI_PROXY_API_KEY="sep_key_..."
 ```
 
-`SLACK_APP_TOKEN` is used for local Socket Mode development. The `SLACK_USER_XOXC`
-and `SLACK_COOKIE` values are used to call Slack's emoji upload endpoint, which
-is not part of Slack's normal bot Web API. Treat both as sensitive user session
-credentials.
+`SLACK_APP_TOKEN` is used for local Socket Mode development. Deploy
+[slack-emoji-proxy](https://github.com/imdevarsh/slack-emoji-proxy), create an
+API key from its Slack App Home, and configure its deployment URL and key as
+`SLACK_EMOJI_PROXY_URL` and `SLACK_EMOJI_PROXY_API_KEY`. The proxy owns the
+Slack browser session used for emoji uploads, so 67ify does not need a Slack
+user token or cookie. Treat the proxy API key as a secret.
 
 ## Slack App
 
 The included `slack-manifest.json` contains the required bot scopes:
 
-- `team:read`
 - `app_mentions:read`
 - `chat:write`
 - `emoji:read`

@@ -11,7 +11,6 @@
 	"oauth_config": {
 		"scopes": {
 			"bot": [
-				"team:read",
 				"app_mentions:read",
 				"chat:write",
 				"emoji:read",
