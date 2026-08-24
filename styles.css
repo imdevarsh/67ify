@@ -24,7 +24,10 @@ html {
 }
 
 body {
+	display: flex;
+	min-height: 100vh;
 	margin: 0;
+	flex-direction: column;
 	color: var(--text);
 	background: var(--background);
 	font-family:
@@ -118,6 +121,7 @@ label:focus-visible {
 }
 
 .page-shell {
+	flex: 1 0 auto;
 	padding: 64px 0 48px;
 }
 
