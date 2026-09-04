@@ -20,7 +20,7 @@
 		"@slack/bolt": "^4.7.3",
 		"@t3-oss/env-core": "^0.13.11",
 		"@vercel/slack-bolt": "^1.6.0",
-		"sharp": "^0.34.5",
+		"sharp": "^0.35.0",
 		"zod": "^4.4.3"
 	}
 }
