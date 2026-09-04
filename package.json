@@ -10,8 +10,8 @@
 		"check:write": "biome check --write ."
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.6",
-		"@types/bun": "latest"
+		"@biomejs/biome": "2.5.12",
+		"@types/bun": "^1.4.1"
 	},
 	"peerDependencies": {
 		"typescript": "^5.9.3"
@@ -19,8 +19,8 @@
 	"dependencies": {
 		"@slack/bolt": "^4.7.3",
 		"@t3-oss/env-core": "^0.13.11",
-		"@vercel/slack-bolt": "^1.6.0",
-		"sharp": "^0.35.0",
-		"zod": "^4.4.3"
+		"@vercel/slack-bolt": "^1.6.5",
+		"sharp": "^0.35.4",
+		"zod": "^4.5.4"
 	}
 }
