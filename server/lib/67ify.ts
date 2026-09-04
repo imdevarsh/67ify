@@ -1,4 +1,4 @@
-import sharp from 'sharp';
+import sharp, { type Sharp } from 'sharp';
 
 export type Mode = '67' | '55' | '67-55';
 
@@ -131,7 +131,7 @@ async function renderGif({
 	colours,
 }: {
 	imageBuffer: ArrayBuffer;
-	src: sharp.Sharp;
+	src: Sharp;
 	pages: number;
 	isAnimatedInput: boolean;
 	width: number;
@@ -232,7 +232,7 @@ async function renderGif({
 }
 
 async function make55Frame(
-	source: sharp.Sharp,
+	source: Sharp,
 	width: number,
 	height: number,
 	depth: number,
