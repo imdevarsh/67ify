@@ -1,4 +1,4 @@
-import sharp, { type Sharp } from 'sharp';
+import sharp, { type OverlayOptions, type Sharp } from 'sharp';
 
 export type Mode = '67' | '55' | '67-55';
 
@@ -242,32 +242,46 @@ async function make55Frame(
 			fit: 'contain',
 			background: { r: 0, g: 0, b: 0, alpha: 0 },
 		})
-		.png()
+		.ensureAlpha()
+		.raw()
 		.toBuffer();
 	const outputHeight = Math.max(1, Math.round(height * (1 + Math.abs(depth))));
 
-	const composites = await Promise.all(
-		Array.from({ length: width }, async (_, x) => {
-			const xProgress = width === 1 ? 0 : x / (width - 1);
-			const xPosition = xProgress * 2 - 1;
-			const columnHeight = Math.max(
-				1,
-				Math.round(height * (1 - depth * xPosition)),
-			);
+	// Describe columns before scheduling a bounded batch of native jobs.
+	const strips: { left: number; width: number; height: number }[] = [];
+	for (let x = 0; x < width; x++) {
+		const xProgress = width === 1 ? 0 : x / (width - 1);
+		const columnHeight = Math.max(
+			1,
+			Math.round(height * (1 - depth * (xProgress * 2 - 1))),
+		);
+		strips.push({ left: x, width: 1, height: columnHeight });
+	}
 
-			return {
-				input: await sharp(resized)
-					.extract({ left: x, top: 0, width: 1, height })
-					.resize(1, columnHeight, {
-						fit: 'fill',
+	const composites: OverlayOptions[] = [];
+	// Bound native jobs and use raw pixels to avoid PNG round-trips per column.
+	for (let offset = 0; offset < strips.length; offset += 8) {
+		composites.push(
+			...(await Promise.all(
+				strips.slice(offset, offset + 8).map(async (strip) => ({
+					input: await sharp(resized, {
+						raw: { width, height, channels: 4 },
 					})
-					.png()
-					.toBuffer(),
-				left: x,
-				top: Math.round((outputHeight - columnHeight) / 2),
-			};
-		}),
-	);
+						.extract({ left: strip.left, top: 0, width: strip.width, height })
+						.resize(strip.width, strip.height, { fit: 'fill' })
+						.raw()
+						.toBuffer(),
+					raw: {
+						width: strip.width,
+						height: strip.height,
+						channels: 4 as const,
+					},
+					left: strip.left,
+					top: Math.round((outputHeight - strip.height) / 2),
+				})),
+			)),
+		);
+	}
 
 	return sharp({
 		create: {
